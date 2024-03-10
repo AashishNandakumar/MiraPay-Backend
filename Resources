@@ -1,0 +1,8 @@
+1. Creating AWS Rekognition Collection to index faces(AWS CLI/Cloudshell):
+$ aws rekognition create-collection --collection-id "user_faces"
+
+{
+    "StatusCode": 200,
+    "CollectionArn": "aws:rekognition:us-east-1:388468215099:collection/user_faces",
+    "FaceModelVersion": "7.0"
+}
