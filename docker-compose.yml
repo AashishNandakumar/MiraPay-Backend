@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_DB: '${DB_NAME1}'
+      POSTGRES_USER: '${USER1}'
+      POSTGRES_PASSWORD: '${PASSWORD1}'
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DEBUG: '1'
+      DB_NAME: '${DB_NAME1}'
+      DB_USER: '${USER1}'
+      DB_PASS: '${PASSWORD1}'
+      DB_SERVICE: 'db'
+      DB_PORT: '5432'
+    networks:
+      - backend
+
+
+networks:
+  backend:
+    driver: bridge
+
+
+volumes:
+  postgres_data:
