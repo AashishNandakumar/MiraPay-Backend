@@ -149,3 +149,25 @@ class UserData(APIView):
         except Exception as e:
             print("Failed to fetch user details: ", e)
             return Response({"Error": "Failed in fetching User Data"}, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class BillUserAndSendReceipt(APIView):
+
+    def post(self, request):
+        try:
+            invoice_pdf = request.data.get('file')
+            payload = request.data.get('payload')
+
+            invoice_meta_data = payload.get('invoice_meta_data')
+            invoice_item_data = payload.get('invoice_item_data')
+            user_upi_id = payload.get('user_upi_id')
+            user_email = payload.get('user_email')
+
+            invoice_meta_data_serializer = serializers.InvoiceInformationSerializer(data=invoice_meta_data)
+            invoice_meta_data_serializer.is_valid(raise_exception=True)
+            invoice_meta_data_serializer.save()
+
+            # logic to push data into 'ItemInformation'
+
+        except Exception as e:
+            print("Error while Billing User: ", e)

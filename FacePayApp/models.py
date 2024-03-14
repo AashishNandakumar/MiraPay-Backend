@@ -20,3 +20,28 @@ class FinancialInformation(models.Model):
     upi_id = models.CharField(max_length=100)
     address = models.TextField()
 
+
+class InvoiceInformation(models.Model):
+    invoice_number = models.CharField(max_length=50)
+    due_date = models.DateField()
+    from_name = models.CharField(max_length=100)
+    from_email_address = models.EmailField()
+    from_phone_number = models.CharField(max_length=15)
+    to_name = models.CharField(max_length=100)
+    to_email_address = models.EmailField()
+    to_phone_number = models.CharField(max_length=15)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=3)
+    tax_percentage = models.DecimalField(max_digits=5, decimal_places=3)
+    total_cost = models.DecimalField(max_digits=5, decimal_places=3)
+    notes = models.TextField()
+
+
+class ItemInformation(models.Model):
+    name = models.CharField(max_length=100)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=5, decimal_places=3)
+    description = models.CharField(max_length=200)
+    category = models.CharField(max_length=50)  # yet to add 'check' constraint
+    invoice = models.ForeignKey(InvoiceInformation, on_delete=models.CASCADE)
+
+
