@@ -153,3 +153,22 @@ CORS_ORIGIN_ALLOW_ALL = True
 # Razorpay configuration
 RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID')
 RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET')
+
+# Email settings(for Google - SMTP)
+"""
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER1')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD1')
+"""
+
+# Email settings for AWS SES
+EMAIL_BACKEND = 'django_ses.SESBackend'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER1')
+
+
+# AWS Settings
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID1')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY1')

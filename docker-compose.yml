@@ -31,6 +31,9 @@ services:
       DB_PASS: '${PASSWORD1}'
       DB_SERVICE: 'db'
       DB_PORT: '5432'
+      AWS_ACCESS_KEY_ID: '${AWS_ACCESS_KEY_ID1}'
+      AWS_SECRET_ACCESS_KEY: '${AWS_SECRET_ACCESS_KEY1}'
+      AWS_DEFAULT_REGION: '${REGION}'
     networks:
       - backend
 

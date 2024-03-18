@@ -2,6 +2,7 @@ from django.db import models
 
 
 # Create your models here.
+# User Information part
 class UserInformation(models.Model):
     userId = models.CharField(max_length=50, primary_key=True)
     first_name = models.CharField(max_length=100)
@@ -21,7 +22,8 @@ class FinancialInformation(models.Model):
     address = models.TextField()
 
 
-class InvoiceInformation(models.Model):
+# Invoice part
+class Invoice(models.Model):
     invoice_number = models.CharField(max_length=50)
     due_date = models.DateField()
     from_name = models.CharField(max_length=100)
@@ -30,18 +32,20 @@ class InvoiceInformation(models.Model):
     to_name = models.CharField(max_length=100)
     to_email_address = models.EmailField()
     to_phone_number = models.CharField(max_length=15)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=3)
-    tax_percentage = models.DecimalField(max_digits=5, decimal_places=3)
-    total_cost = models.DecimalField(max_digits=5, decimal_places=3)
+    discount_percentage = models.FloatField()
+    tax_percentage = models.FloatField()
+    total_cost = models.FloatField()
     notes = models.TextField()
 
 
-class ItemInformation(models.Model):
+class Item(models.Model):
     name = models.CharField(max_length=100)
     quantity = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=5, decimal_places=3)
-    description = models.CharField(max_length=200)
+    price = models.FloatField()
+    description = models.TextField()
     category = models.CharField(max_length=50)  # yet to add 'check' constraint
-    invoice = models.ForeignKey(InvoiceInformation, on_delete=models.CASCADE)
+
+    invoice = models.ForeignKey(Invoice, related_name='items', on_delete=models.CASCADE)
+
 
 

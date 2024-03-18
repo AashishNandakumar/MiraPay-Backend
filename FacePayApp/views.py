@@ -1,3 +1,4 @@
+import json
 import os
 from rest_framework.response import Response
 from . import serializers
@@ -9,6 +10,7 @@ from botocore.exceptions import NoCredentialsError
 from . import models
 from django.shortcuts import get_object_or_404
 from dotenv import load_dotenv
+from FacePayApp.utils import emails, payments, sms
 
 load_dotenv()
 
@@ -56,7 +58,7 @@ class GenerateSignedURLs(APIView):
         bucket_name = os.getenv('BUCKET_NAME')
         region = os.getenv('REGION')
 
-        s3Client = boto3.client('s3', region_name=region,)
+        s3Client = boto3.client('s3', region_name=region)
 
         try:
             presigned_url = s3Client.generate_presigned_url('put_object',  # permission on the bucket
@@ -67,28 +69,6 @@ class GenerateSignedURLs(APIView):
 
         except NoCredentialsError:  # trigger when the backend has no proper cred. to interact wit AWS
             return Response({'error': 'Credentials not available'}, status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-"""
-class GenerateSignedURLsForVerification(APIView):
-    def get(self, request):
-        object_name = request.query_params.get('fileName', 'UUID-Absent')
-
-        bucket_name = 'mpay-user-verification-bucket'
-        region = 'us-east-1'
-
-        s3Client = boto3.client('s3', region_name=region)
-
-        try:
-            presigned_url = s3Client.generate_presigned_url('put_object',
-                                                            Params={'Bucket': bucket_name, 'Key': object_name, 'ContentType': 'image/png'},
-                                                            ExpiresIn=3600)
-
-            return Response({'url': presigned_url}, status.HTTP_200_OK)
-
-        except NoCredentialsError:  # trigger when the backend has no proper cred. to interact wit AWS
-            return Response({'error': 'Credentials not available'}, status.HTTP_500_INTERNAL_SERVER_ERROR)
-"""
 
 
 class VerifyUser(APIView):
@@ -106,7 +86,7 @@ class VerifyUser(APIView):
             search_response = rekognition_client.search_faces_by_image(
                 CollectionId=collection_id,
                 Image={'Bytes': image_bytes},
-                FaceMatchThreshold=90,  # for testing only
+                FaceMatchThreshold=90,  # for testing only(90 %)
                 MaxFaces=1
             )
 
@@ -156,18 +136,32 @@ class BillUserAndSendReceipt(APIView):
     def post(self, request):
         try:
             invoice_pdf = request.data.get('file')
-            payload = request.data.get('payload')
+            payload_str = request.data.get('payload')
+            payload = json.loads(json.loads(payload_str))
 
-            invoice_meta_data = payload.get('invoice_meta_data')
-            invoice_item_data = payload.get('invoice_item_data')
-            user_upi_id = payload.get('user_upi_id')
-            user_email = payload.get('user_email')
+            invoice = payload.get('invoice')
 
-            invoice_meta_data_serializer = serializers.InvoiceInformationSerializer(data=invoice_meta_data)
-            invoice_meta_data_serializer.is_valid(raise_exception=True)
-            invoice_meta_data_serializer.save()
+            serializer = serializers.InvoiceSerializer(data=invoice)
+            serializer.is_valid(raise_exception=True)
 
-            # logic to push data into 'ItemInformation'
+            financial_information = payload.get('financial_information')  # get `user_upi_id` and `user_email_id` through `financial_information`
 
+            # TODO: Generate UPI payment link and send it to the user(sms)
+            payment_link = payments.generate_payment_link(financial_information=financial_information)
+            print(payment_link)
+
+            # emails.send_payment_link_email(payment_link, financial_information)  # sending to email not required for now
+            # sms.send_payment_link_sms(fi=financial_information, pl=payment_link)
+
+            # TODO: After successful payment from the user mail him the invoice and save his data
+
+            if invoice_pdf:
+                emails.send_email_with_pdf_attachment(invoice_pdf, financial_information)
+                serializer.save()  # save only after the payment is successful.
+            else:
+                return Response({"Error": "Invoice Pdf not received"}, status.HTTP_400_BAD_REQUEST)
+
+            return Response({"Success": "Successfully  stored Invoice information"}, status.HTTP_201_CREATED)
         except Exception as e:
             print("Error while Billing User: ", e)
+            return Response({"Failed": "Failed to store Invoice information"}, status.HTTP_400_BAD_REQUEST)
