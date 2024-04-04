@@ -62,7 +62,9 @@ class GenerateSignedURLs(APIView):
 
         try:
             presigned_url = s3Client.generate_presigned_url('put_object',  # permission on the bucket
-                                                            Params={'Bucket': bucket_name, 'Key': object_name, 'ContentType': 'image/png'},  # the content type should match both on the backend and the frontend
+                                                            Params={'Bucket': bucket_name, 'Key': object_name,
+                                                                    'ContentType': 'image/png'},
+                                                            # the content type should match both on the backend and the frontend
                                                             ExpiresIn=3600)  # 1 hr expiry time for the URL
 
             return Response({'url': presigned_url}, status.HTTP_200_OK)
@@ -97,7 +99,8 @@ class VerifyUser(APIView):
                 matched_external_image_id = match['Face']['ExternalImageId'].split('.')[0]
                 confidence = match['Face']['Confidence']
 
-                print(f"Match found: FaceId = {matched_face_id}, ExternalImageId = {matched_external_image_id}, Confidence = {confidence}")
+                print(
+                    f"Match found: FaceId = {matched_face_id}, ExternalImageId = {matched_external_image_id}, Confidence = {confidence}")
 
                 return Response({'userId': matched_external_image_id}, status.HTTP_200_OK)
             else:
@@ -144,7 +147,8 @@ class BillUserAndSendReceipt(APIView):
             serializer = serializers.InvoiceSerializer(data=invoice)
             serializer.is_valid(raise_exception=True)
 
-            financial_information = payload.get('financial_information')  # get `user_upi_id` and `user_email_id` through `financial_information`
+            financial_information = payload.get(
+                'financial_information')  # get `user_upi_id` and `user_email_id` through `financial_information`
 
             # TODO: Generate UPI payment link and send it to the user(sms)
             payment_link = payments.generate_payment_link(financial_information=financial_information)
