@@ -1,6 +1,8 @@
 # MiraPay
 
 >  Facial-Recognition-as-a-Service **(FRaaS)**
+![1](https://github.com/AashishNandakumar/MiraPay-Backend/assets/98106129/2d5b1955-3556-4c72-868c-fc138d10acd9)
+
 
 ## Table of Contents
 
