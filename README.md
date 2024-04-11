@@ -29,7 +29,8 @@ Enhancing retail shopping checkout with swift and secure **facial recognition sy
 5. Highly **dependent on technology** - mobile phones and physical cards for making payments.
 
 ## Solution - How do we make up to those problems
-![4.png](..%2F..%2FCanvas%2FMiraPay%2FBlue%20and%20Pink%20Professional%20Business%20Strategy%20Presentation%2F4.png)
+![4](https://github.com/AashishNandakumar/MiraPay-Backend/assets/98106129/58123c0b-d284-4e9c-84e2-d6ade50ebfb9)
+
 
 ## Project Status
 
@@ -50,13 +51,14 @@ website link - [www.smart-invoice-generator.com](https://smart-invoice-generator
 
 
 ## Unique Selling Proposition - USP
-![6.png](..%2F..%2FCanvas%2FMiraPay%2FBlue%20and%20Pink%20Professional%20Business%20Strategy%20Presentation%2F6.png)
+![6](https://github.com/AashishNandakumar/MiraPay-Backend/assets/98106129/47d1490d-6fb8-4109-a3d7-1dce40119873)
+
 
 ## Market Adoption
-![7.png](..%2F..%2FCanvas%2FMiraPay%2FBlue%20and%20Pink%20Professional%20Business%20Strategy%20Presentation%2F7.png)
+![7](https://github.com/AashishNandakumar/MiraPay-Backend/assets/98106129/844c0c34-6ffe-4f17-9554-c9ec49b5c676)
 
 ## Revenue Model
-![8.png](..%2F..%2FCanvas%2FMiraPay%2FBlue%20and%20Pink%20Professional%20Business%20Strategy%20Presentation%2F8.png)
+![8](https://github.com/AashishNandakumar/MiraPay-Backend/assets/98106129/89d63b55-4e47-4387-82a6-c075f4c5b85f)
 
 ## Contribution
 Contributions are welcome! To contribute to this project, please follow these steps:
