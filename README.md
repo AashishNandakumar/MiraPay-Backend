@@ -20,7 +20,7 @@
   
 
 ## Product Purpose
-Enhancing retail shopping checkout with swift and secure **facial recognition systems**, **wallet integration** and enhanced tailored **consumer analytics**.
+Enhancing retail shopping checkout with swift and secure **facial recognition systems**, **wallet integration** and tailored **consumer analytics**.
 
 
 ## Shortcomings in Current Solutions
